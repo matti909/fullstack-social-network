@@ -5,3 +5,5 @@ pnpm-workspace.yaml
 pnpm-lock.yaml
 
 package.json 
+
+.env
