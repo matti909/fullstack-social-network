@@ -1,0 +1,29 @@
+# Test endpoints GraphQL - server http://localhost:4000/graphql
+# Arrancar antes: pnpm --filter server dev  (o npm run dev dentro de packages/server)
+
+# 1) Health check actual (único query cableado hoy en src/index.ts)
+curl -X POST http://localhost:4000/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query":"{ hello }"}'
+
+# 2) REGISTER (definido en src/graphql/schema.graphql, AÚN NO cableado en src/index.ts)
+# Payload según modelo: username (unique, trim), email (unique, lowercase, trim), password (required)
+curl -X POST http://localhost:4000/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query":"mutation Register($username: String!, $email: String!, $password: String!) { register(username: $username, email: $email, password: $password) { id username email createdAt updatedAt } }","variables":{"username":"testuser","email":"test@example.com","password":"Password123!"}}'
+
+# 3) REGISTER - segundo usuario de prueba (para probar unique constraints)
+curl -X POST http://localhost:4000/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query":"mutation Register($username: String!, $email: String!, $password: String!) { register(username: $username, email: $email, password: $password) { id username email createdAt updatedAt } }","variables":{"username":"testuser2","email":"test2@example.com","password":"Password123!"}}'
+
+# 4) LISTAR USUARIOS (definido en schema.graphql, tampoco cableado aún)
+curl -X POST http://localhost:4000/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query":"{ users { id username email createdAt updatedAt } }"}'
+
+# 5) LOGIN - NO EXISTE aún (no hay mutation login en schema.graphql ni en resolvers.ts)
+# Cuando se implemente será algo como:
+# curl -X POST http://localhost:4000/graphql \
+#   -H "Content-Type: application/json" \
+#   -d '{"query":"mutation Login($email: String!, $password: String!) { login(email: $email, password: $password) { token user { id username email } } }","variables":{"email":"test@example.com","password":"Password123!"}}'

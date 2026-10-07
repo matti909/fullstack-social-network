@@ -5,7 +5,7 @@ import { expressMiddleware } from "@as-integrations/express5";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import http from "http";
 import cors from "cors";
-import { initDatabase } from "./db/init.js";
+import { initDatabase } from "./config/database.js";
 
 const typeDefs = `#graphql
   type Query {
@@ -22,6 +22,9 @@ const resolvers = {
 const PORT = 4000;
 const app: Application = express();
 const httpServer = http.createServer(app);
+
+app.use(cors());
+app.use(express.json());
 
 const server: ApolloServer = new ApolloServer({
   typeDefs,

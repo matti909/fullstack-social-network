@@ -1,9 +1,5 @@
 node_modules/
-
-pnpm-workspace.yaml 
-
-pnpm-lock.yaml
-
-package.json 
-
+dist/
 .env
+*.log
+.DS_Store
