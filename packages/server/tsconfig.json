@@ -5,6 +5,9 @@
     "rootDir": "./src",
     "outDir": "./dist",
 
+    "paths": {
+      "@ngsocial/graphql": ["../graphql-types/src"]
+    },
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
@@ -39,6 +42,7 @@
     "moduleDetection": "force",
     "skipLibCheck": true
   },
+  "references": [{ "path": "../graphql-types" }],
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "src/tests/**/*"]
 }

@@ -1,8 +1,16 @@
 {
-  "name": "root",
+  "name": "@ngsocial/ngsocial",
   "private": true,
+  "scripts": {
+    "codegen": "graphql-codegen --watch --config codegen.yml",
+    "compile": "pnpm run generate && tsc",
+    "start": "pnpm run compile && node ./dist/index.js"
+  },
   "dependencies": {},
   "devDependencies": {
+    "@graphql-codegen/cli": "^7.4.4",
+    "@graphql-codegen/typescript": "^6.1.1",
+    "@graphql-codegen/typescript-resolvers": "^6.1.0",
     "lerna": "^10.0.1"
   },
   "workspaces": [
