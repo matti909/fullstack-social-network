@@ -1,3 +1,5 @@
+directive @auth on FIELD_DEFINITION
+
 scalar Upload
 
 type File {
@@ -73,12 +75,12 @@ type AuthPayload {
 }
 
 type Mutation {
-  post(text: String, image: String): Post
+  post(text: String, image: String): Post @auth
   removePost(id: ID!): ID
-  comment(comment: String!, postId: ID!): Comment
+  comment(comment: String!, postId: ID!): Comment @auth
   removeComment(id: ID!): Comment
-  like(postId: ID!): Like
-  removeLike(postId: ID!): Like
+  like(postId: ID!): Like @auth
+  removeLike(postId: ID!): Like @auth
   removeNotification(id: ID!): ID
   register(fullName: String!, username: String!, email: String!, password: String!): AuthPayload!
   signIn(email: String!, password: String!): AuthPayload!

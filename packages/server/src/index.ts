@@ -5,8 +5,7 @@ import { expressMiddleware } from "@as-integrations/express5";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import http from "http";
 import cors from "cors";
-import { typeDefs } from "./graphql/schema.js";
-import { resolvers } from "./graphql/resolvers.js";
+import schema from "./graphql/schema.js";
 import type { AppContext } from "./graphql/context.js";
 import { db } from "./config/db.js";
 import { getAuthUser } from "./config/jwt.js";
@@ -19,8 +18,7 @@ app.use(cors());
 app.use(express.json());
 
 const server = new ApolloServer<AppContext>({
-  typeDefs,
-  resolvers,
+  schema,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
