@@ -2,11 +2,13 @@
   "name": "@ngsocial/ngsocial",
   "private": true,
   "scripts": {
-    "codegen": "graphql-codegen --watch --config codegen.yml",
+    "codegen": "graphql-codegen  --config codegen.yml",
     "compile": "pnpm run generate && tsc",
     "start": "pnpm run compile && node ./dist/index.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "bcryptjs": "^3.0.3"
+  },
   "devDependencies": {
     "@graphql-codegen/cli": "^7.4.4",
     "@graphql-codegen/typescript": "^6.1.1",
@@ -14,6 +16,6 @@
     "lerna": "^10.0.1"
   },
   "workspaces": [
-    "packages/*"
+    "./packages/*"
   ]
 }

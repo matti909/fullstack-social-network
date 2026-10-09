@@ -4,6 +4,7 @@ allowBuilds:
   '@apollo/protobufjs': true
   '@parcel/watcher': true
   '@swc/core': true
+  bcrypt: true
   esbuild: true
   mongodb-memory-server: true
   nx: true

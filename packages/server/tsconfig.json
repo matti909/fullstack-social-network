@@ -6,7 +6,7 @@
     "outDir": "./dist",
 
     "paths": {
-      "@ngsocial/graphql": ["../graphql-types/src"]
+      "@social/graphql": ["../graphql-types/src"]
     },
     // Environment Settings
     // See also https://aka.ms/tsconfig/module

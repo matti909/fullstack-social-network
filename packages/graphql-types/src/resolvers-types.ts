@@ -220,6 +220,7 @@ export type User = {
   image?: Maybe<Scalars['String']['output']>;
   password: Scalars['String']['output'];
   postsCount: Scalars['Int']['output'];
+  token?: Maybe<Scalars['String']['output']>;
   username: Scalars['String']['output'];
 };
 
@@ -418,6 +419,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   postsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 

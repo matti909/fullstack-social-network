@@ -1,5 +1,5 @@
 {
-  "name": "graphql-types",
+  "name": "@social/graphql",
   "version": "0.0.1",
   "description": "> TODO: description",
   "homepage": "https://github.com/matti909/fullstack-typescript-express-react#readme",
@@ -12,7 +12,8 @@
   },
   "license": "ISC",
   "author": "MATIAS SANTIAGO TRINIDAD <matias.saantiago@gmail.com>",
-  "main": "lib/graphql-types.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -21,6 +22,10 @@
     "lib"
   ],
   "scripts": {
+    "build": "tsc -p tsconfig.json",
     "test": "node ./__tests__/graphql-types.test.js"
+  },
+  "dependencies": {
+    "graphql": "^17.0.2"
   }
 }

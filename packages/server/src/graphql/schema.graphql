@@ -18,6 +18,7 @@ type User {
   coverImage: String
   postsCount: Int!
   createdAt: String!
+  token: String
 }
 
 type Post {
