@@ -2,6 +2,8 @@
 import type { Resolvers } from "@social/graphql";
 import type { AppContext } from "./context.js";
 import { GraphQLError } from "graphql";
+import { GraphQLUpload } from "graphql-upload-ts";
+import { S3Client } from "@aws-sdk/client-s3";
 import * as bcrypt from "bcryptjs";
 import { or } from "@prisma/orm-postgres/orm-client";
 import {
@@ -13,7 +15,17 @@ import {
 } from "./helpers/mappers.js";
 import { signToken } from "../config/jwt.js";
 
+const s3 = new S3Client({
+  region: "auto",
+  endpoint: process.env.S3_ENDPOINT,
+  credentials: {
+    accessKeyid: process.env.S3_ACCESS_KEY,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  },
+});
+
 export const resolvers: Resolvers<AppContext> = {
+  Upload: GraphQLUpload,
   Query: {
     getUser: async (_, { userId }, { db }) => {
       const id = parseInt(userId, 10);
@@ -83,7 +95,6 @@ export const resolvers: Resolvers<AppContext> = {
           extensions: { code: "BAD_USER_INPUT" },
         });
       }
-      // Padre para el mapeo (fiel al legacy: post inexistente → []).
       const postRow = await db.orm.public.Post.where({ id: postId })
         .include("author")
         .include("latestComment", (c) => c.include("author"))
@@ -135,8 +146,6 @@ export const resolvers: Resolvers<AppContext> = {
     register: async (_, args, { db }) => {
       const { fullName, username, email, password } = args;
 
-      // Postgres no tiene ER_DUP_ENTRY (MySQL): pre-chequeo en lugar de
-      // cazar el error del driver. El UNIQUE de la DB queda como backstop.
       const emailTaken = await db.orm.public.User.where({ email }).first();
       if (emailTaken) {
         throw new GraphQLError("A user with this email already exists", {
@@ -199,7 +208,6 @@ export const resolvers: Resolvers<AppContext> = {
         });
       }
 
-      // FK por id directo: sin fetch previo de entidad como en TypeORM.
       const saved = await db.orm.public.Post.create({
         text: args.text ?? "",
         image: args.image ?? null,
@@ -491,6 +499,21 @@ export const resolvers: Resolvers<AppContext> = {
       await db.orm.public.Notification.where({ id: notificationId }).delete();
 
       return id;
+    },
+
+    uploadFile: async (_, { file }) => {
+      const { createReadStream, filename, mimetype, encoding } = await file;
+      const fileStream = createReadStream();
+      const uploadParams = {
+        Bucket: process.env.S3_BUCKET as string,
+        Key: filename,
+        Body: fileStream,
+        ACL: "public-read",
+      };
+      const result = await s3.upload(uploadParams).promise();
+      console.log(result);
+      const url = result.Location;
+      return { url, filename, mimetype, encoding };
     },
   },
 };

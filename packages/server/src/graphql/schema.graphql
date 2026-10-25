@@ -88,4 +88,5 @@ type Mutation {
   setUserPhoto(file: Upload!): User
   setUserCover(file: Upload!): User
   setUserBio(bio: String!): User
+  uploadFile(file: Upload!): File!
 }

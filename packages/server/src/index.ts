@@ -3,6 +3,7 @@ import type { Application, Request, Response } from "express";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@as-integrations/express5";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import { graphqlUploadExpress } from "graphql-upload-ts";
 import http from "http";
 import cors from "cors";
 import schema from "./graphql/schema.js";
@@ -35,6 +36,7 @@ app.use(
   "/graphql",
   cors(),
   express.json(),
+  graphqlUploadExpress({ maxFileSize: 1_000_000, maxFiles: 4 }),
   expressMiddleware(server, {
     context: async ({ req }): Promise<AppContext> => ({
       db,
